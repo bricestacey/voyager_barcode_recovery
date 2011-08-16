@@ -1,0 +1,9 @@
+Hello <%= @patron.first_name %>,
+
+We have received a request to recover a lost barcode associated with this email address. If you did not request this, you may simply disregard this email. One of our other patrons with a similar email address or UMS number has probably entered your information by mistake.
+
+Barcode: <%= @patron.barcode %>
+Last Name: <%= @patron.last_name %> (lowercase)
+Group: <%= @patron.patron_group %>
+
+If you have any futher questions please contact the Circulation Department at 617-287-5900 or library.circulation@umb.edu
