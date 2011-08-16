@@ -1,27 +1,6 @@
-PATH
-  remote: /home/brice/code/voyager
-  specs:
-    voyager (0.0.3)
-      activerecord
-      activerecord-oracle_enhanced-adapter
-      ruby-oci8
-
 GEM
   remote: http://rubygems.org/
   specs:
-    activemodel (3.0.9)
-      activesupport (= 3.0.9)
-      builder (~> 2.1.2)
-      i18n (~> 0.5.0)
-    activerecord (3.0.9)
-      activemodel (= 3.0.9)
-      activesupport (= 3.0.9)
-      arel (~> 2.0.10)
-      tzinfo (~> 0.3.23)
-    activerecord-oracle_enhanced-adapter (1.4.0)
-    activesupport (3.0.9)
-    arel (2.0.10)
-    builder (2.1.2)
     i18n (0.5.0)
     mail (2.3.0)
       i18n (>= 0.4.0)
@@ -42,7 +21,6 @@ GEM
     treetop (1.4.10)
       polyglot
       polyglot (>= 0.3.1)
-    tzinfo (0.3.29)
 
 PLATFORMS
   ruby
@@ -52,4 +30,3 @@ DEPENDENCIES
   ruby-oci8
   shotgun
   sinatra
-  voyager!
