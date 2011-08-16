@@ -41,9 +41,9 @@ class Barcode < Sinatra::Base
       SQL
 
       begin 
-        r = OCI8.new(CONFIG['username'], CONFIG['password']).exec(sql, id).fetch
+        r = OCI8.new(CONFIG['oracle']['username'], CONFIG['oracle']['password']).exec(sql, id).fetch
         return r.nil? ? nil : Patron.new(r)
-      rescue
+      rescue => e
         # log error here
         return nil
       end
@@ -53,20 +53,13 @@ class Barcode < Sinatra::Base
   helpers do
     def mail_barcode_reminder(patron)
       Pony.mail(
-        :to      => patron.email,
-        :from    => 'brice@atropos.lib.umb.edu',
-        :subject => 'Barcode Recovery',
-        :body    => erb(:email, :locals => { :patron => self }),
-        :via => :smtp,
-        :via_options => {
-          :address              => 'smtp.gmail.com',
-          :port                 => '587',
-          :enable_starttls_auto => true,
-          :user_name            => 'task.notifier8@gmail.com',
-          :password             => 'circulate',
-          :authentication       => :plain, # :plain, :login, :cram_md5, no auth by default
-          :domain               => "localhost.localdomain" # the HELO domain provided by the client to the server
-        })
+        :to          => patron.email,
+        :from        => CONFIG['email']['from'],
+        :subject     => CONFIG['email']['subject'],
+        :body        => erb(:email, :locals => { :patron => self }),
+        :via         => CONFIG['email']['via'],
+        :via_options => CONFIG['email']['via_options']
+      )
     end
   end
 
