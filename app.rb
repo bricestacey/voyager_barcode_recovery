@@ -2,16 +2,18 @@ require 'sinatra/base'
 require 'erb'
 require 'oci8'
 require 'pony'
+require 'active_model'
 
 class Barcode < Sinatra::Base
   CONFIG = YAML.load_file(File.join(File.dirname(__FILE__), "config.yml"))
 
   class Patron
-    attr :first_name, :last_name, :barcode, :patron_group, :email
-    def initialize(arr)
-      # If any of the initializing fields are blank, return nil
-      return nil if arr.any? {|field| field.blank?}
+    include ActiveModel::Validations
+    validates_presence_of :first_name, :last_name, :barcode, :patron_group, :email
 
+    attr_accessor :first_name, :last_name, :barcode, :patron_group, :email
+
+    def initialize(arr)
       @first_name = arr[0]
       @last_name = arr[1]
       @barcode = arr[2]
@@ -69,11 +71,11 @@ class Barcode < Sinatra::Base
   end
 
   post '/' do
-    match = params[:pid].match /(UMS)?([0-9]{8})/i
-    if match
+    # `pid` must be in the form UMS12345678 or 12345678
+    if match = params[:pid].match(/(UMS)?([0-9]{8})/i) and !match[2].blank?
       id = match[2]
 
-      if @patron = Patron.find_by_ums(id)
+      if @patron = Patron.find_by_ums(id) and @patron.valid?
         mail_barcode_reminder(@patron)
         @success = 'An email is on the way!'
       else
