@@ -79,15 +79,15 @@ class Barcode < Sinatra::Base
     match = params[:pid].match /(UMS)?([0-9]{8})/i
     if match
       id = match[2]
-    else
-      raise "Invalid UMS number"
-    end
 
-    if @patron = Patron.find_by_ums(id)
-      mail_barcode_reminder(@patron)
-      @success = 'An email is on the way!'
+      if @patron = Patron.find_by_ums(id)
+        mail_barcode_reminder(@patron)
+        @success = 'An email is on the way!'
+      else
+        @error = "We couldn't find your UMS number in our system."
+      end
     else
-      @error = "We couldn't find your UMS number in our system."
+      @error = 'The UMS number you entered is invalid.'
     end
 
     erb :form
