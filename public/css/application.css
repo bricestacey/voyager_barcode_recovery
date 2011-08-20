@@ -1,0 +1,41 @@
+#header {
+  background: #005A8B;
+  background: -webkit-gradient(linear, left top, left bottom, from(#005A8B), to(#007BBE));
+  background: -moz-linear-gradient(-90deg, #005A8B, #007BBE);
+  border-bottom: 1px solid #009CFF;
+  box-shadow: 0 1px 2px #999;
+  -moz-box-shadow: 0 1px 2px #999;
+  -webkit-box-shadow: 0 1px 2px #999;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: bold;
+  margin: 0;
+  width: 100%;
+}
+#header-container {
+  clear: both;
+  height: 56px;
+  margin: 0 auto;
+  padding: 20px;
+  width: 950px;
+}
+#image {
+  float: left;
+  height: 58px;
+  width: 50px;
+}
+#tagline h1 {
+  color: #fff;
+  display: inline;
+  float: left;
+  padding: 6px 0 0 20px;
+  text-shadow: 0 1px #002336;
+}
+.breathe {
+  padding-top: 20px;
+}
+.container label, .breathe p {
+  font-family: Georgia, Times, "Times New Roman", serif;
+}
+.breathe p {
+  font-size: 1.2em;
+}
