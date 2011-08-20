@@ -9,6 +9,10 @@ Configuration
 
 Edit config.yml to include your database username and password.
 
+`bundle install`
+`bundle exec rackup config.ru`
+Usually go to http://localhost:9292/
+
 Authors
 -------
 
