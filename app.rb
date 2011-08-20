@@ -1,11 +1,13 @@
 require 'sinatra/base'
 require 'erb'
-require 'oci8'
+#require 'oci8'
 require 'pony'
 require 'active_model'
 
 class Barcode < Sinatra::Base
   CONFIG = YAML.load_file(File.join(File.dirname(__FILE__), "config.yml"))
+
+  set :public, File.dirname(__FILE__) + '/public'
 
   class Patron
     include ActiveModel::Validations
@@ -43,7 +45,8 @@ class Barcode < Sinatra::Base
       SQL
 
       begin 
-        r = OCI8.new(CONFIG['oracle']['username'], CONFIG['oracle']['password']).exec(sql, id).fetch
+        #r = OCI8.new(CONFIG['oracle']['username'], CONFIG['oracle']['password']).exec(sql, id).fetch
+        r = ['Brice', 'Stacey', '0003305484', 'STAFF', 'bricestacey@gmail.com']
         return r.nil? ? nil : Patron.new(r)
       rescue => e
         # log error here
@@ -54,6 +57,7 @@ class Barcode < Sinatra::Base
 
   helpers do
     def mail_barcode_reminder(patron)
+=begin
       Pony.mail(
         :to          => patron.email,
         :from        => CONFIG['email']['from'],
@@ -62,6 +66,7 @@ class Barcode < Sinatra::Base
         :via         => CONFIG['email']['via'],
         :via_options => CONFIG['email']['via_options']
       )
+=end
     end
   end
 
