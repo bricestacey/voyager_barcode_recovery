@@ -9,16 +9,14 @@ class Barcode < Sinatra::Base
 
   class Patron
     include ActiveModel::Validations
-    validates_presence_of :first_name, :last_name, :barcode, :patron_group, :email
 
+    validates :first_name, :last_name, :barcode, :patron_group, :email, :presence => true
     attr_accessor :first_name, :last_name, :barcode, :patron_group, :email
 
-    def initialize(arr)
-      @first_name = arr[0]
-      @last_name = arr[1]
-      @barcode = arr[2]
-      @patron_group = arr[3]
-      @email = arr[4]
+    def initialize(attributes = {})
+      attributes.each do |name, value|
+        send("#{name}=", value)
+      end
     end
 
     def self.find_by_ums(id)
@@ -44,7 +42,8 @@ class Barcode < Sinatra::Base
 
       begin 
         r = OCI8.new(CONFIG['oracle']['username'], CONFIG['oracle']['password']).exec(sql, id).fetch
-        return r.nil? ? nil : Patron.new(r)
+
+        return r.nil? ? nil : Patron.new(:first_name => r[0], :last_name => r[1], :barcode => r[2], :patron_group => r[3], :email => r[4])
       rescue => e
         # log error here
         return nil
@@ -73,9 +72,7 @@ class Barcode < Sinatra::Base
   post '/' do
     # `pid` must be in the form UMS12345678 or 12345678
     if match = params[:pid].match(/(UMS)?([0-9]{8})/i) and !match[2].blank?
-      id = match[2]
-
-      if @patron = Patron.find_by_ums(id) and @patron.valid?
+      if @patron = Patron.find_by_ums($2) and @patron.valid?
         mail_barcode_reminder(@patron)
         @success = 'An email is on the way!'
       else
