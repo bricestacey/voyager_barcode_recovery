@@ -23,6 +23,7 @@ describe Barcode do
       end
 
       it "should set a success message" do
+        Pony.stub(:mail)
         post '/', :pid => '12345678'
 
         last_response.body.should include "An email is on the way!"
@@ -30,9 +31,7 @@ describe Barcode do
     end
 
     context "an invalid UMS number is posted" do
-      before(:each) do
-        Barcode::Patron.stub(:find_by_ums) {nil}
-      end
+      before(:each) { Barcode::Patron.stub(:find_by_ums) {nil}}
 
       it "should not send an email" do
         Pony.should_receive(:mail).never
@@ -41,6 +40,18 @@ describe Barcode do
       end
 
       it "should set an error message" do
+        post '/', :pid => '12345678'
+
+        last_response.body.should include "We couldn't find your UMS number in our system."
+      end
+    end
+
+    context "when the database is down" do
+      before(:each) do
+        OCI8.stub(:new) { raise }
+      end
+
+      it "should throw an error" do
         post '/', :pid => '12345678'
 
         last_response.body.should include "We couldn't find your UMS number in our system."
