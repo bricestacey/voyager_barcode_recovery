@@ -6,23 +6,34 @@
   <meta name="description" content="Recover your UMass Boston Library barcode">  
   <meta name="author" content="Brice Stacey">
 
+  <link rel="stylesheet" href="css/application.css" type="text/css" media="screen, projection">
   <link rel="stylesheet" href="css/blueprint/screen.css" type="text/css" media="screen, projection">
   <link rel="stylesheet" href="css/blueprint/print.css" type="text/css" media="print">
   <!--[if lt IE 8]>
     <link rel="stylesheet" href="css/blueprint/ie.css" type="text/css" media="screen, projection">
   <![endif]-->
-
 </head>
-
-<body class="container">
-  <div class="span-12">
-    <h1>UMass Boston Library Barcode Recovery</h1>
+<body>
+  <div id="header">
+    <div id="header-container">
+      <div id="image">
+        <a href="http://www.lib.umb.edu/">
+          <img height="58" width="50" src="../images/umass-boston-logo.png" alt="UMass Boston" />
+        </a>
+      </div>
+      <div id="tagline">
+        <h1>Library Barcode Recovery</h1>
+      </div>
+    </div>
+  </div>
+  <div class="container breathe">
     <% if @notice then %><div id="flash" class="notice"><%= @notice %></div><% end %>
     <% if @success then %><div id="flash" class="success"><%= @success %></div><% end %>
     <% if @error then %><div id="flash" class="error"><%= @error %></div><% end %>
     <p>Your Healey Library barcode will be emailed to the email address we have on file in the library's patron database. (Unless you have requested this to be changed, it is most likely your UMB email address)</p>
 
     <form method="post" action="/">
+      <label for="pid">Enter your UMS Number here:</label>
       <input name="pid" type="text" placeholder="UMS Number">
       <input type="submit" value="Recover Barcode">
     </form>
